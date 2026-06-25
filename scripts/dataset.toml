@@ -1,0 +1,11 @@
+[general]
+resolution = [1024, 1024]
+caption_extension = ".txt"
+batch_size = 1
+enable_bucket = true
+bucket_no_upscale = false
+
+[[datasets]]
+image_directory = "/mnt/data/krea2-lora/dataset/masafee"
+cache_directory = "/mnt/data/krea2-lora/dataset/cache"
+num_repeats = 10

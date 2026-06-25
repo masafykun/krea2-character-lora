@@ -1,0 +1,30 @@
+# Repo-internal / agent files (never publish)
+CLAUDE.md
+BUILD_LOG.md
+.claude/
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+compile*.log
+en?.log
+*.fls
+*.fdb_latexmk
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Large model weights (hosted on Hugging Face, not in git)
+*.safetensors
+*.gguf
+*.ckpt

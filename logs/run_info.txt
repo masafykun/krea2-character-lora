@@ -1,0 +1,73 @@
+# Krea2 LoRA (masafee) training run
+started_utc: 2026-06-24T17:12:27Z
+host: user-XA7C-R36
+musubi_commit: 30c658c4f4b0bf05038b3346eff9670259b10fc7
+torch: 2.6.0+cu124
+python: Python 3.11.15
+gpu: NVIDIA GeForce RTX 3060, 12288 MiB, 595.71.05
+cpu_ram_total: 30Gi
+--- models ---
+total 34335024
+-rw-rw-r-- 1 user user 26283332608 Jun 25 01:33 krea2_raw.safetensors
+-rw-rw-r-- 1 user user  8875719384 Jun 25 00:45 qwen3vl_4b_bf16.safetensors
+lrwxrwxrwx 1 user user          55 Jun 25 00:42 qwen_image_vae.safetensors -> /mnt/data/comfyui/models/vae/qwen_image_vae.safetensors
+--- dataset.toml ---
+[general]
+resolution = [1024, 1024]
+caption_extension = ".txt"
+batch_size = 1
+enable_bucket = true
+bucket_no_upscale = false
+
+[[datasets]]
+image_directory = "/mnt/data/krea2-lora/dataset/masafee"
+cache_directory = "/mnt/data/krea2-lora/dataset/cache"
+num_repeats = 10
+--- dataset captions (13) ---
+m01.txt: masafee, red panda, upper body, happy face, closed eyes, one paw making ok sign, white background, with text
+m02.txt: masafee, red panda, full body, standing, hands on hips, blushing, yellow background, with text
+m03.txt: masafee, red panda, full body, standing, hands on hips, smiling, yellow background, with text
+m04.txt: masafee, red panda, upper body, sitting at desk, typing on keyboard, determined face, white background, with text
+m05.txt: masafee, red panda, full body, dynamic running pose, happy, mouth open, white background, with text
+m07.txt: masafee, red panda, upper body, arms crossed, serious face, white background, with text
+m08.txt: masafee, red panda, portrait, big sparkling teary eyes, blushing, paws near mouth, white background, with text
+m09.txt: masafee, red panda, upper body, smug grin, paw on chin, white background, with text
+m10.txt: masafee, red panda, portrait, confident cool smile, paw on chin, pink sparkling background, with text
+m11.txt: masafee, red panda, upper body, closed eyes, tongue out, blushing, white background, with text
+m14.txt: masafee, red panda, upper body, surprised face, mouth open, white background, with text
+m15.txt: masafee, red panda, upper body, shocked face, tongue sticking out, white background, with text
+m16.txt: masafee, red panda, portrait, holding a pointer stick, name tag, smiling, white background
+--- full train command ---
+#!/bin/bash
+set -e
+cd /mnt/data/krea2-lora/musubi-tuner
+source .venv/bin/activate
+export PYTHONUNBUFFERED=1
+M=/mnt/data/krea2-lora/models
+DS=/mnt/data/krea2-lora/dataset.toml
+OUT=/mnt/data/krea2-lora/output
+
+# 1) latent事前キャッシュ（VAE使用）
+python src/musubi_tuner/krea2_cache_latents.py \
+  --dataset_config $DS --vae $M/qwen_image_vae.safetensors
+
+# 2) テキストエンコーダ出力 事前キャッシュ（Qwen3-VL）
+python src/musubi_tuner/krea2_cache_text_encoder_outputs.py \
+  --dataset_config $DS --text_encoder $M/qwen3vl_4b_bf16.safetensors --batch_size 1
+
+# 3) 学習（RAWで学習、fp8_scaled+block_swap26で12GBに収める）
+accelerate launch --num_cpu_threads_per_process 1 --mixed_precision bf16 \
+  src/musubi_tuner/krea2_train_network.py \
+  --dit $M/krea2_raw.safetensors \
+  --vae $M/qwen_image_vae.safetensors \
+  --dataset_config $DS \
+  --sdpa --mixed_precision bf16 \
+  --fp8_base --fp8_scaled --blocks_to_swap 26 \
+  --timestep_sampling shift --weighting_scheme none --discrete_flow_shift 2.5 \
+  --network_module networks.lora_krea2 --network_dim 32 --network_alpha 32 \
+  --optimizer_type adamw --learning_rate 1e-4 \
+  --max_train_epochs 10 --save_every_n_epochs 2 \
+  --gradient_checkpointing --seed 42 \
+  --output_dir $OUT --output_name masafee_krea2 \
+  --logging_dir /mnt/data/krea2-lora/logs
+echo "=== TRAIN DONE exit=$? ==="
