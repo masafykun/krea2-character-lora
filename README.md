@@ -1,5 +1,7 @@
 # krea2-character-lora
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20838898.svg)](https://doi.org/10.5281/zenodo.20838898)
+
 **LoRA fine-tuning of a 12B-parameter image generation model (Krea 2 / Qwen-Image MMDiT) for a personally-created character, on a single consumer-grade 12 GB GPU.**
 
 This repository accompanies the technical report *"LoRA Fine-Tuning of a 12B-Parameter Image Generation Model for a Personally-Created Character: FP8 Quantization and Block Swapping on a Single Consumer-Grade GPU, and Transfer to a Distilled Model"* (Masato Suzuki / Masafy, 2026). It is the successor to a prior study that fine-tuned the same character on Stable Diffusion 1.5.
@@ -68,6 +70,9 @@ Exact versions and hyperparameters are recorded in `logs/run_info.txt` and the r
   author = {Masato Suzuki},
   title  = {LoRA Fine-Tuning of a 12B-Parameter Image Generation Model for a Personally-Created Character},
   year   = {2026},
+  publisher = {Zenodo},
+  doi    = {10.5281/zenodo.20838898},
+  url    = {https://doi.org/10.5281/zenodo.20838898},
   note   = {Consumer-grade single-GPU study; FP8 quantization, block swapping, and RAW-to-Turbo transfer}
 }
 ```
