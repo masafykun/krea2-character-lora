@@ -3,7 +3,7 @@
 The trained LoRA checkpoints are hosted on Hugging Face (they are too large for
 this Git repository and belong on a model host):
 
-> **https://huggingface.co/masafykun/krea2-character-lora**
+> **https://huggingface.co/masafy/krea2-character-lora**
 
 | File | Epoch | Size | Notes |
 |---|---|---|---|
@@ -23,7 +23,7 @@ bash ../scripts/download_lora.sh
 # or with huggingface_hub
 pip install huggingface_hub
 python -c "from huggingface_hub import snapshot_download; \
-snapshot_download('masafykun/krea2-character-lora', local_dir='lora')"
+snapshot_download('masafy/krea2-character-lora', local_dir='lora')"
 ```
 
 ## Usage (ComfyUI)

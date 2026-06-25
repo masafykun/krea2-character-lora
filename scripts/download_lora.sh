@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-REPO="masafykun/krea2-character-lora"
+REPO="masafy/krea2-character-lora"
 DEST="$(cd "$(dirname "$0")/.." && pwd)/lora"
 mkdir -p "$DEST"
 if command -v hf >/dev/null 2>&1; then

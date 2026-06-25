@@ -47,7 +47,7 @@ logs/        Provenance, training-loss curve, GPU telemetry
 
 The LoRA checkpoints (epochs 6 / 8 / 10, ~448 MB each) are hosted on Hugging Face:
 
-> **https://huggingface.co/masafykun/krea2-character-lora**
+> **https://huggingface.co/masafy/krea2-character-lora**
 
 Download via `scripts/download_lora.sh` or the `huggingface_hub` library. The recommended checkpoint is **epoch 10** used at **strength 0.8** together with an eye-highlight prompt (see the report, §Results).
 
