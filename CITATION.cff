@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+title: "Krea2 Character LoRA: Single-GPU LoRA Fine-tuning of a 12B-Parameter Image Model for an Original Character"
+message: "If you use this software or model, please cite it using this metadata."
+type: software
+version: v1.0.0
+date-released: "2026-06-25"
+doi: "10.5281/zenodo.20838898"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20838898"
+    description: "Zenodo concept DOI (all versions)"
+authors:
+  - family-names: Suzuki
+    given-names: Masato
+    alias: masafykun
+    orcid: "https://orcid.org/0009-0000-7977-2756"
+    website: "https://masafy.org/"
+repository-code: "https://github.com/masafykun/krea2-character-lora"
+url: "https://huggingface.co/masafy/krea2-character-lora"
+license: MIT
+keywords:
+  - lora
+  - low-rank-adaptation
+  - krea-2
+  - qwen-image
+  - mmdit
+  - fp8-quantization
+  - block-swapping
+  - fine-tuning
+  - character-generation
+  - consumer-gpu
+abstract: >
+  Empirical study of LoRA fine-tuning a 12-billion-parameter
+  image generation model (Krea 2, a Qwen-Image-family MMDiT)
+  to reproduce an original character ("Masafee", a red panda)
+  on a single consumer GPU (NVIDIA GeForce RTX 3060 12GB) — a
+  model whose half-precision weights (~24GB) do not fit on the
+  GPU. Feasibility is achieved by jointly using FP8 scaled
+  quantization, block swapping (26 blocks), and PyTorch
+  expandable_segments. The LoRA is trained on the
+  pre-distillation RAW model and transfers cleanly to 8-step
+  Turbo inference. A key finding is that overfitting is
+  frequency-asymmetric: high-frequency details (eye
+  catchlights) erode before the low-frequency overall form,
+  and the degradation is reversibly recovered at inference via
+  LoRA strength and text conditioning. The successor to a
+  prior Stable Diffusion 1.5 study of the same character.
+  Paper (JA/EN), training scripts, dataset, inference
+  workflow, and provenance logs are included; LoRA weights
+  are distributed on Hugging Face.
