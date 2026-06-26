@@ -40,7 +40,7 @@
 | 学習手法 | LoRA (rank 32, alpha 32, AdamW, lr 1e-4, 1,300 step) |
 | 学習フレームワーク | Musubi Tuner (kohya-ss) |
 | メモリ戦略 | FP8 scaled + block swap 26 + `expandable_segments` |
-| 基盤 | PyTorch 2.6 + CUDA 12.4 / Python 3.11（`uv` で構築） |
+| 基盤 | PyTorch 2.6.0 + CUDA 12.4 / Python 3.11.15（`uv` で構築） |
 | ハードウェア | NVIDIA GeForce RTX 3060 12GB |
 
 ---
@@ -75,8 +75,8 @@ git clone https://github.com/kohya-ss/musubi-tuner.git
 # 2. Python 3.11 環境を用意（uv 推奨。ディストリ標準が新しすぎる場合に有効）
 uv venv --python 3.11 .venv
 source .venv/bin/activate
-uv pip install torch==2.6.0 torchvision --index-url https://download.pytorch.org/whl/cu124
-uv pip install -r musubi-tuner/requirements.txt
+uv pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cu124
+uv pip install -r musubi-tuner/requirements.txt   # 本実験は musubi-tuner @ 30c658c で実行
 
 # 3. ベースモデルを配置（別途ダウンロード。ライセンス上ここでは再配布しない）
 #    Krea 2 RAW / Qwen3-VL-4B / Qwen-Image VAE
